@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import gpsRoute from './routes/gps.js';
+import gpsRoute from './gps.js';
 
 dotenv.config();
 
