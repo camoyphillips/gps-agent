@@ -1,4 +1,3 @@
-// index.js
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -19,36 +18,38 @@ if (!process.env.MONGODB_URI) {
   process.exit(1);
 }
 
-// Connect to MongoDB
+// MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => {
+  .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
     process.exit(1);
   });
 
+// Setup Express
 const app = express();
 app.use(express.json());
 
-// Serve static HTML dashboard files from /public
+// Static + view engine setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set up Pug views
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-// Mount GPS route handlers
+// API routing
 app.use('/api', gpsRoute);
 
-// Optional: redirect root to HTML dashboard
+// Optional: serve static homepage
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ AI GPS Agent running at http://localhost:${PORT}`);
+// ✅ BIND TO 0.0.0.0 and use Render’s PORT
+const PORT = process.env.PORT || 10000;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => {
+  console.log(`✅ AI GPS Agent running at http://${HOST}:${PORT}`);
 });
