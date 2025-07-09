@@ -1,0 +1,86 @@
+doctype html
+html
+  head
+    title GPS Logs
+    style.
+      body {
+        font-family: sans-serif;
+        background: #f9f9f9;
+        padding: 2rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        margin-top: 1rem;
+      }
+      th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #222;
+        color: #fff;
+      }
+      form {
+        margin-bottom: 1rem;
+      }
+      input, select, button {
+        margin-right: 0.5rem;
+        padding: 0.5rem;
+      }
+      .triggered {
+        color: green;
+        font-weight: bold;
+      }
+      .not-triggered {
+        color: red;
+        font-weight: bold;
+      }
+      .pagination {
+        margin-top: 1rem;
+      }
+      .pagination a {
+        margin-right: 12px;
+        text-decoration: none;
+        color: #007BFF;
+      }
+  body
+    h1 GPS Logs
+
+    form(method='get', action='/api/view/logs')
+      input(type='text', name='phone', placeholder='Search by phone', value=phone)
+      select(name='zone')
+        option(value='') All Zones
+        each z in zones
+          option(value=z selected=(z == zone))= z
+      button(type='submit') Filter
+
+    table
+      thead
+        tr
+          th Time
+          th Phone
+          th Lat
+          th Lng
+          th Zone
+          th Action
+          th Triggered
+      tbody
+        each log in logs
+          tr
+            td= new Date(log.timestamp).toLocaleString()
+            td= log.phone
+            td= log.lat
+            td= log.lng
+            td= log.zoneName
+            td= log.action
+            td(class=log.triggered ? 'triggered' : 'not-triggered')= log.triggered ? 'Yes' : 'No'
+
+    .pagination
+      if currentPage > 1
+        a(href=`/api/view/logs?page=${currentPage - 1}&phone=${phone || ''}&zone=${zone || ''}`) ◀ Prev
+      span Page #{currentPage} of #{totalPages}
+      if currentPage < totalPages
+        a(href=`/api/view/logs?page=${currentPage + 1}&phone=${phone || ''}&zone=${zone || ''}`) Next ▶

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Warehouse A",
+    "lat": 43.6543,
+    "lng": -79.3832,
+    "radius": 500,
+    "action": "sms",
+    "message": "Arrived at Warehouse A. Begin unloading."
+  },
+  {
+    "name": "Depot X",
+    "lat": 43.7001,
+    "lng": -79.4163,
+    "radius": 300,
+    "action": "call"
+  }
+]
